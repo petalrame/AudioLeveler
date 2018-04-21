@@ -8,14 +8,26 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .slidecontainer {
+            width: 50%;
+        }
+    </style>
 </head>
 
-<div class="slidecontainer">
-    Control Volume
-    <input type="range" min="1" max="100" value="50" class="slider" id="volumeController">
-</div>
-<form>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<body>
+    <h1>Control Dat Volume</h1>
+
+    <form method="POST" action="set_volume">
+    <div class="slidecontainer">
+        <input type="range" min="1" max="100" value="50" name="volumeSet" id="volumeController">
+        <p>Value:
+            <span id="volumeValue"></span>
+        </p>
+        <input type="submit" value="submit" />
+    </div>
+    </form>
+</body>
 
 </html>

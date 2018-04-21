@@ -15,7 +15,9 @@ class VolumeController():
     def level_audio(self, indata, outdata, frames, time, status):
         # Run for the duration of the program
         for device in self.devices:
+            print("indata: ", indata)
             volume_norm = np.linalg.norm(indata) * 100
+            print("vol_norm: ", volume_norm)
             current_audio_level = int(volume_norm)
             print(current_audio_level * "|")
             # Get each speakers current volume
