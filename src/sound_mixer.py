@@ -15,25 +15,27 @@ class VolumeController():
     def level_audio(self, indata, outdata, frames, time, status):
         # Run for the duration of the program
         for device in self.devices:
-            print("indata: ", indata)
             volume_norm = np.linalg.norm(indata) * 100
-            print("vol_norm: ", volume_norm)
-            current_audio_level = int(volume_norm)
-            print(current_audio_level * "|")
+            current_audio_level = int((int(volume_norm) / 255) * 100)
+            if current_audio_level <= 0:
+                continue
+            print("CURRENT LEVEL: " + str(current_audio_level))
             # Get each speakers current volume
             volume = device.volume()
             if current_audio_level < self.desired_audio_level:
-                print("INCREASING VOLUME")
-                device.set_volume(volume.actual + 5)
+                if current_audio_level is not 0:
+                    print("INCREASING VOLUME")
+                    device.set_volume(volume.actual + 1)
             elif current_audio_level > self.desired_audio_level:
                 print("DECREASING VOLUME")
-                device.set_volume(volume.actual - 5)
+                device.set_volume(volume.actual - 1)
             else:
                 print("Volume is good!")
 
 
     def runner(self):
         print("Running...")
+        print("Desired: " + str(self.desired_audio_level))
         while True:
             with sd.Stream(callback=self.level_audio):
                 sd.sleep(self.duration * 1000)
