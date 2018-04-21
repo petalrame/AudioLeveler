@@ -32,12 +32,8 @@ def level_audio(indata, outdata, frames, time, status):
             print("Volume is good!")
 
 
-main(audio_level):
+runner(audio_level):
     DESIRED_AUDIO_LEVEL = audio_level
     while True:
         with sd.Stream(callback=level_audio):
             sd.sleep(duration * 1000)
-
-
-if __name__ == '__main__':
-    main()
