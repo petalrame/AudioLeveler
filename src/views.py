@@ -1,5 +1,6 @@
 import os
 from flask import Flask, flash, redirect, render_template, request, session, abort
+from sound_mixer import VolumeController
 
 template_dir = os.path.abspath('../templates')
 
@@ -17,9 +18,13 @@ def login():
 
 @app.route("/set_volume", methods=["POST"])
 def setVolume():
-    volume = request.form["volumeSet"]
-    return volume
+    volume = int(request.form["volumeSet"])
+    print(volume)
+    controller = VolumeController(volume)
+    controller.runner()
+    return render_template(
+        'index.html')
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=8001)

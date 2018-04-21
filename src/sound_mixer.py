@@ -3,37 +3,37 @@ from libsoundtouch import soundtouch_device, discover_devices
 from libsoundtouch.utils import Source, Type
 import sounddevice as sd
 import numpy as np
-devices = discover_devices(timeout=2)  # Default timeout is 5 seconds
 
-# Sound level we want to stay at
-DESIRED_AUDIO_LEVEL = 18
+class VolumeController():
+    """ Controls the volume of the speaker
+    """
+    def __init__(self, desired_vol=50):
+        self.desired_audio_level = desired_vol
+        self.duration = 10
+        self.devices = discover_devices(timeout=2)  # Default timeout is 5 seconds
 
-#
-
-# Record indefinately
-duration = 1
-
-
-def level_audio(indata, outdata, frames, time, status):
-    # Run for the duration of the program
-    for device in devices:
-        volume_norm = np.linalg.norm(indata) * 100
-        current_audio_level = int(volume_norm)
-        print(current_audio_level * "|")
-        # Get each speakers current volume
-        volume = device.volume()
-        if current_audio_level < DESIRED_AUDIO_LEVEL:
-            print("INCREASING VOLUME")
-            device.set_volume(volume.actual + 5)
-        elif current_audio_level > DESIRED_AUDIO_LEVEL:
-            print("DECREASING VOLUME")
-            device.set_volume(volume.actual - 5)
-        else:
-            print("Volume is good!")
+    def level_audio(self, indata, outdata, frames, time, status):
+        # Run for the duration of the program
+        for device in self.devices:
+            volume_norm = np.linalg.norm(indata) * 100
+            current_audio_level = int(volume_norm)
+            print(current_audio_level * "|")
+            # Get each speakers current volume
+            volume = device.volume()
+            if current_audio_level < self.desired_audio_level:
+                print("INCREASING VOLUME")
+                device.set_volume(volume.actual + 5)
+            elif current_audio_level > self.desired_audio_level:
+                print("DECREASING VOLUME")
+                device.set_volume(volume.actual - 5)
+            else:
+                print("Volume is good!")
 
 
-runner(audio_level):
-    DESIRED_AUDIO_LEVEL = audio_level
-    while True:
-        with sd.Stream(callback=level_audio):
-            sd.sleep(duration * 1000)
+    def runner(self):
+        print("Running...")
+        while True:
+            with sd.Stream(callback=self.level_audio):
+                sd.sleep(self.duration * 1000)
+        print("Process Terminated.")
+        # TODO: Mechanism to stop loop above
