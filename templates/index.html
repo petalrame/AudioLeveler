@@ -16,17 +16,36 @@
     </style>
 </head>
 
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+    </div>
+</nav>
+
 <body>
     <h1>Control Dat Volume</h1>
 
-    <form method="POST" action="set_volume">
-    <div class="slidecontainer">
-        <input type="range" min="1" max="100" value="50" name="volumeSet" id="volumeController">
-        <p>Value:
-            <span id="volumeValue"></span>
-        </p>
-        <input type="submit" value="submit" />
-    </div>
+    <form method="POST" action="">
+        <div class="slidecontainer">
+            <input type="range" min="1" max="100" value="50" name="volumeSet" id="volumeController">
+            <p>
+                <b>Value: </b>
+                <span id="volumeValue"></span>
+            </p>
+            <input type="submit" value="Start" />
+            <script>
+                var slider = document.getElementById("volumeController");
+                var output = document.getElementById("volumeValue");
+                output.innerHTML = slider.value; // Display the default slider value
+
+                // Update the current slider value (each time you drag the slider handle)
+                slider.oninput = function () {
+                    output.innerHTML = this.value;
+                }
+            </script>
+        </div>
     </form>
 </body>
 

@@ -11,19 +11,21 @@ def index():
     return render_template(
         'index.html')
 
-@app.route("/login")
-def login():
-    return render_template(
-        'login.html')
-
-@app.route("/set_volume", methods=["POST"])
-def setVolume():
+@app.route("/", methods=["POST"])
+def startControl():
     volume = int(request.form["volumeSet"])
-    print(volume)
+    if 'Record' in session
+    session["Record"] = "ON"
+    handleVolControl(volume)
+
+@app.route("/", methods=["POST"])
+def stopControl():
+    
+
+def handleVolControl(volume):
     controller = VolumeController(volume)
     controller.runner()
-    return render_template(
-        'index.html')
+
 
 
 if __name__ == '__main__':
