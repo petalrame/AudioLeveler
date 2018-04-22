@@ -1,5 +1,6 @@
 import os
 from flask import Flask, flash, redirect, render_template, request, session, abort
+import signal, psutil
 from sound_mixer import VolumeController
 
 template_dir = os.path.abspath('../templates')
@@ -23,7 +24,19 @@ def startControl():
     else:
         print("Setting session object")
         session["record"] = "ON"
-        #handleVolControl(volume)
+
+        # Create child proc for vol control
+        n = os.fork()
+
+        # n > 0 is parent 
+        if n == 0:
+            handleVolControl(volume)
+        elif n > 0:
+            parent = psutil.Process(os.getpid())
+            children = parent.children()
+            session["PID"] = str(children[-1].pid)
+        else:
+            print("There was an error")
     return render_template(
         'index.html')
 
@@ -32,8 +45,10 @@ def stopControl():
     """ Stop volume control
     """
     if 'record' in session:
+        print("Stopping PID: ", session["PID"])
         session.pop('record', None)
-        # TODO: Stop recording(AKA stop the never ending loop)
+        os.kill(int(session["PID"]), signal.SIGTERM)
+        session.pop('PID', None)
     else:
         print("Volume Control never even started!")
     return render_template(
