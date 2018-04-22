@@ -4,8 +4,9 @@ import signal, psutil
 from sound_mixer import VolumeController
 
 template_dir = os.path.abspath('../templates')
+static_dir = os.path.abspath('../static')
 
-app = Flask(__name__, template_folder=template_dir)
+app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 app.secret_key = "asia4lyfe"
 
 @app.route("/")
@@ -31,6 +32,7 @@ def startControl():
         # n > 0 is parent 
         if n == 0:
             handleVolControl(volume)
+            #plotter()
         elif n > 0:
             parent = psutil.Process(os.getpid())
             children = parent.children()
@@ -52,7 +54,7 @@ def stopControl():
     else:
         print("Volume Control never even started!")
     return render_template(
-        'index.html')
+        'index.html', plot_url="../static/img_disp")
 
 def handleVolControl(volume):
     controller = VolumeController(volume)
