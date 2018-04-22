@@ -3,10 +3,7 @@ from flask import Flask, flash, redirect, render_template, request, session, abo
 import signal, psutil
 from sound_mixer import VolumeController
 
-template_dir = os.path.abspath('../templates')
-static_dir = os.path.abspath('../static')
-
-app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
+app = Flask(__name__)
 app.secret_key = "asia4lyfe"
 
 @app.route("/")
