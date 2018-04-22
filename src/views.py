@@ -14,13 +14,19 @@ def index():
 @app.route("/", methods=["POST"])
 def startControl():
     volume = int(request.form["volumeSet"])
-    if 'Record' in session
-    session["Record"] = "ON"
-    handleVolControl(volume)
+    if 'Record' in session:
+        print("Volume control is already on")
+    else:
+        session["Record"] = "ON"
+        handleVolControl(volume)
+    return
 
 @app.route("/", methods=["POST"])
 def stopControl():
-    
+    if 'Record' in session:
+        # Stop recording(AKA stop the never ending loop)
+    else:
+        print("Volume Control never even started!")
 
 def handleVolControl(volume):
     controller = VolumeController(volume)
