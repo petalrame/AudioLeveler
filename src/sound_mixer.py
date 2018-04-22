@@ -1,7 +1,6 @@
 """Contains Bose API Code"""
 from libsoundtouch import soundtouch_device, discover_devices
 from libsoundtouch.utils import Source, Type
-import sounddevice as sd
 import numpy as np
 import time
 import math
@@ -68,6 +67,7 @@ class VolumeController():
 
 
     def runner(self):
+        import sounddevice as sd
         print("Running...")
         print("Desired: " + str(self.desired_audio_level))
         while True:
