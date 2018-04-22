@@ -5,28 +5,39 @@ from sound_mixer import VolumeController
 template_dir = os.path.abspath('../templates')
 
 app = Flask(__name__, template_folder=template_dir)
+app.secret_key = "asia4lyfe"
 
 @app.route("/")
 def index():
     return render_template(
         'index.html')
 
-@app.route("/", methods=["POST"])
+@app.route("/startControl", methods=["POST"])
 def startControl():
+    """ Starts volume control
+    """
     volume = int(request.form["volumeSet"])
-    if 'Record' in session:
-        print("Volume control is already on")
+    if 'record' in session:
+        print("Session Info: ", session)
+        print("Volume control is already on. Doing nothing...")
     else:
-        session["Record"] = "ON"
-        handleVolControl(volume)
-    return
+        print("Setting session object")
+        session["record"] = "ON"
+        #handleVolControl(volume)
+    return render_template(
+        'index.html')
 
-@app.route("/", methods=["POST"])
+@app.route("/stopControl", methods=["POST"])
 def stopControl():
-    if 'Record' in session:
-        # Stop recording(AKA stop the never ending loop)
+    """ Stop volume control
+    """
+    if 'record' in session:
+        session.pop('record', None)
+        # TODO: Stop recording(AKA stop the never ending loop)
     else:
         print("Volume Control never even started!")
+    return render_template(
+        'index.html')
 
 def handleVolControl(volume):
     controller = VolumeController(volume)

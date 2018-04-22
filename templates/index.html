@@ -27,7 +27,7 @@
 <body>
     <h1>Control Dat Volume</h1>
 
-    <form method="POST" action="">
+    <form method="POST" action="/startControl">
         <div class="slidecontainer">
             <input type="range" min="1" max="100" value="50" name="volumeSet" id="volumeController">
             <p>
@@ -46,6 +46,9 @@
                 }
             </script>
         </div>
+    </form>
+    <form method="POST" action="/stopControl">
+        <input type="submit" value="Stop" />
     </form>
 </body>
 
