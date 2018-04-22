@@ -64,4 +64,4 @@ def handleVolControl(volume):
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 8080))
-    app.run(host='smartleveler-api-heroku.herokuapp.com', port=port)
+    app.run(host='174.225.10.150', port=port)
