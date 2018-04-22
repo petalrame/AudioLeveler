@@ -32,7 +32,6 @@ def startControl():
         # n > 0 is parent 
         if n == 0:
             handleVolControl(volume)
-            #plotter()
         elif n > 0:
             parent = psutil.Process(os.getpid())
             children = parent.children()
